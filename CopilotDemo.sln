@@ -2,9 +2,9 @@
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopilotDemo", "CopilotDemo.csproj", "{928D3B86-472E-4799-5E77-91EFB65C0D92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopilotDemo", "src\CopilotDemo\CopilotDemo.csproj", "{928D3B86-472E-4799-5E77-91EFB65C0D92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopilotDemo.Tests", "CopilotDemo.Tests\CopilotDemo.Tests.csproj", "{FA58EDB2-55D7-40AF-AF30-2D7A682F1412}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopilotDemo.Tests", "tests\CopilotDemo.Tests\CopilotDemo.Tests.csproj", "{FA58EDB2-55D7-40AF-AF30-2D7A682F1412}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
