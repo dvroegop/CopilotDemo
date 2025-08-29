@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers.CodeFixes/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "companyName": "CopilotDemo",
+      "copyrightText": "Copyright (c) CopilotDemo. All rights reserved.",
+      "documentExposedElements": false,
+      "documentInternalElements": false
+    },
+    "indentation": {
+      "indentationSize": 4,
+      "tabSize": 4,
+      "useTabs": false
+    },
+    "spacingRules": {
+      "spacingAroundDeclarationStatements": false
+    },
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": true
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": true,
+      "allowedHungarianPrefixes": [ ]
+    },
+    "maintainabilityRules": {
+      "topLevelTypes": [ "Class", "Interface", "Struct", "Delegate", "Enum" ]
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "omit",
+      "allowConsecutiveUsings": true
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace",
+      "blankLinesBetweenUsingGroups": "omit"
+    }
+  }
+}
