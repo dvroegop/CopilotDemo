@@ -326,4 +326,165 @@ public class NumberGuessingGameTests
         var result2 = game.ProcessDirectionResponse("H");
         Assert.Equal(GuessResult.Correct, result2);
     }
+
+    // New tests for the combined C/L/H functionality
+    [Fact]
+    public void ProcessGuessResponse_CorrectGuessWithC_ReturnsCorrectAndEndsGame()
+    {
+        // Arrange
+        var game = new NumberGuessingGame();
+
+        // Act
+        var result = game.ProcessGuessResponse("C");
+
+        // Assert
+        Assert.Equal(GuessResult.Correct, result);
+        Assert.True(game.IsGameEnded);
+    }
+
+    [Fact]
+    public void ProcessGuessResponse_CorrectGuessWithLowerC_ReturnsCorrectAndEndsGame()
+    {
+        // Arrange
+        var game = new NumberGuessingGame();
+
+        // Act
+        var result = game.ProcessGuessResponse("c");
+
+        // Assert
+        Assert.Equal(GuessResult.Correct, result);
+        Assert.True(game.IsGameEnded);
+    }
+
+    [Fact]
+    public void ProcessGuessResponse_HigherWithH_UpdatesMinAndContinues()
+    {
+        // Arrange
+        var game = new NumberGuessingGame();
+        var initialGuess = game.CurrentGuess; // 64
+
+        // Act
+        var result = game.ProcessGuessResponse("H");
+
+        // Assert
+        Assert.Equal(GuessResult.Continue, result);
+        Assert.Equal(65, game.Min); // min should be guess + 1
+        Assert.True(game.CurrentGuess != initialGuess); // guess should change
+        Assert.False(game.IsGameEnded);
+    }
+
+    [Fact]
+    public void ProcessGuessResponse_LowerWithL_UpdatesMaxAndContinues()
+    {
+        // Arrange
+        var game = new NumberGuessingGame();
+        var initialGuess = game.CurrentGuess; // 64
+
+        // Act
+        var result = game.ProcessGuessResponse("L");
+
+        // Assert
+        Assert.Equal(GuessResult.Continue, result);
+        Assert.Equal(63, game.Max); // max should be guess - 1
+        Assert.True(game.CurrentGuess != initialGuess); // guess should change
+        Assert.False(game.IsGameEnded);
+    }
+
+    [Theory]
+    [InlineData("h")]
+    [InlineData("H")]
+    [InlineData(" H ")]
+    public void ProcessGuessResponse_HigherVariations_AllWork(string response)
+    {
+        // Arrange
+        var game = new NumberGuessingGame();
+
+        // Act
+        var result = game.ProcessGuessResponse(response);
+
+        // Assert
+        Assert.Equal(GuessResult.Continue, result);
+        Assert.Equal(65, game.Min);
+    }
+
+    [Theory]
+    [InlineData("l")]
+    [InlineData("L")]
+    [InlineData(" L ")]
+    public void ProcessGuessResponse_LowerVariations_AllWork(string response)
+    {
+        // Arrange
+        var game = new NumberGuessingGame();
+
+        // Act
+        var result = game.ProcessGuessResponse(response);
+
+        // Assert
+        Assert.Equal(GuessResult.Continue, result);
+        Assert.Equal(63, game.Max);
+    }
+
+    [Theory]
+    [InlineData("c")]
+    [InlineData("C")]
+    [InlineData(" C ")]
+    public void ProcessGuessResponse_CorrectVariations_AllWork(string response)
+    {
+        // Arrange
+        var game = new NumberGuessingGame();
+
+        // Act
+        var result = game.ProcessGuessResponse(response);
+
+        // Assert
+        Assert.Equal(GuessResult.Correct, result);
+        Assert.True(game.IsGameEnded);
+    }
+
+    [Fact]
+    public void NewCombinedGameFlow_HappyPath_WorksCorrectly()
+    {
+        // Arrange
+        var game = new NumberGuessingGame(0, 100);
+        // Let's simulate the user thinking of number 25
+        
+        // Act & Assert
+        // Initial guess: 64
+        Assert.Equal(64, game.CurrentGuess);
+        
+        // User says "L" - number is lower than 64
+        var result1 = game.ProcessGuessResponse("L");
+        Assert.Equal(GuessResult.Continue, result1);
+        // max becomes 63, new guess = (0 + 63) / 2 = 31
+        Assert.Equal(31, game.CurrentGuess);
+        
+        // User says "L" again - number is lower than 31
+        var result2 = game.ProcessGuessResponse("L");
+        Assert.Equal(GuessResult.Continue, result2);
+        // max becomes 30, new guess = (0 + 30) / 2 = 15
+        Assert.Equal(15, game.CurrentGuess);
+        
+        // User says "H" - number is higher than 15
+        var result3 = game.ProcessGuessResponse("H");
+        Assert.Equal(GuessResult.Continue, result3);
+        // min becomes 16, new guess = (16 + 30) / 2 = 23
+        Assert.Equal(23, game.CurrentGuess);
+        
+        // User says "H" - number is higher than 23
+        var result4 = game.ProcessGuessResponse("H");
+        Assert.Equal(GuessResult.Continue, result4);
+        // min becomes 24, new guess = (24 + 30) / 2 = 27
+        Assert.Equal(27, game.CurrentGuess);
+        
+        // User says "L" - number is lower than 27
+        var result5 = game.ProcessGuessResponse("L");
+        Assert.Equal(GuessResult.Continue, result5);
+        // max becomes 26, new guess = (24 + 26) / 2 = 25
+        Assert.Equal(25, game.CurrentGuess);
+        
+        // User confirms correct guess with "C"
+        var result6 = game.ProcessGuessResponse("C");
+        Assert.Equal(GuessResult.Correct, result6);
+        Assert.True(game.IsGameEnded);
+    }
 }
