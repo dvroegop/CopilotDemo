@@ -38,7 +38,24 @@ public class NumberGuessingGame
 
         var normalizedResponse = response?.ToUpper().Trim();
         
-        if (normalizedResponse == "Y")
+        // Handle new combined input: C (correct), L (lower), H (higher)
+        if (normalizedResponse == "C")
+        {
+            _gameEnded = true;
+            return GuessResult.Correct;
+        }
+        else if (normalizedResponse == "L")
+        {
+            _max = _currentGuess - 1;
+            return UpdateGuessAndCheckState();
+        }
+        else if (normalizedResponse == "H")
+        {
+            _min = _currentGuess + 1;
+            return UpdateGuessAndCheckState();
+        }
+        // Keep backward compatibility for existing Y/N responses
+        else if (normalizedResponse == "Y")
         {
             _gameEnded = true;
             return GuessResult.Correct;
